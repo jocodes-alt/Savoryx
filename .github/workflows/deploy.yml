@@ -1,0 +1,28 @@
+name: Deploy to Netlify
+
+on:
+  push:
+    branches:
+      - main  # Changez 'main' si votre branche principale est nommée différemment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build the site
+      run: |
+        npm install
+        npm run build # Changez cette ligne selon la commande pour construire votre site
+
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v1.1
+      with:
+        publish-dir: ./public # Changez le chemin si votre build est dans un autre répertoire
+        production-branch: main
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
